@@ -9,7 +9,7 @@ router.post('/', function(req, res, next) {
 	var Password = req.body.Password;
 	var Name = req.body.Name;
 	var Age = req.body.Age;
-	var Sex = req.body.sex;
+	var Sex = req.body.Sex;
 
 	User.create({
 		user_id: user_ID,
@@ -18,19 +18,22 @@ router.post('/', function(req, res, next) {
 		age: Age,
 		sex: Sex,
 		flag: 0,
+	})
+	.then(function(data) {
+		console.log('회원가입 성공! ID: '+user_ID);
+		var response = {register: 'Success'};
+		res.json(response);
+	})
+	.catch(function(err) {
+		console.log('error!!' + err);
 	});
-
-	Console.log("회원가입 성공! ID: "+user_ID);
-	var response = {register: 'Success'};
-	res.json(response);
-
 });
 
 //아이디 중복체크
 router.post('/check', function(req, res, next) {
 	var id = req.body.ID; 
 	if(id == ''){
-		console.log("아이디가 비어있는 채로 도착");
+		console.log("아이디 중복 체크: 비어있음");
 		var response = {register: 'Empty' };
 		res.json(response);
 		
@@ -44,13 +47,13 @@ router.post('/check', function(req, res, next) {
 			if(data == null || data == undefined) {
 				console.log("아이디 중복체크: 중복 아님!");
 				
-				var response = {register: 'Success'};
+				var response = {register: 'NotEmpty'};
 				res.json(response);
 			
 				return;
 			}
 			else {
-				console.log("아이디 중복입니다!");
+				console.log("아이디 중복체크: 중복!");
 					
 				var response = {register: 'fail'};
 				res.json(response);

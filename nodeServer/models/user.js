@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
 	password: {
 		type: DataTypes.STRING(20),
 		allowNull: false,
-		unique: true,
 	},
 //유저이름
 	name: {

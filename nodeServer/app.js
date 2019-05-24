@@ -7,9 +7,12 @@ var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+//추가한  라우터 목록
 var DBrouter = require('./routes/test');
 var LoginRouter = require('./routes/login');
 var RegisterRouter = require('./routes/register');
+//추가한 라우터 목록 끝
 
 var sequelize = require('./models').sequelize;
 
@@ -25,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-		secret: 'keyboard cat',
+		secret: 'Pharmacy',
 		resave: false,
 		saveUninitialize: true
 }));

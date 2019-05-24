@@ -3,8 +3,9 @@ var router = express.Router();
 
 var Medicine = require('../models').Medicine;
 var User = require('../models').User;
-/*
+
 router.get('/dbdb', function(req, res, next) {
+/*
 	User.create({
 		user_id: 'root',
 		password: 'dodyd',
@@ -13,9 +14,9 @@ router.get('/dbdb', function(req, res, next) {
 		sex: 'M',
 		flag: 1,
 });
-		
+*/		
 });
-*/
+
 
 router.get('/dbtest', function(req, res, next) {
 	console.log("db get ??");
