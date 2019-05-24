@@ -3,19 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-//var createDBrouter = require('./routes/createdb');
 var DBrouter = require('./routes/test');
-///
+var LoginRouter = require('./routes/login');
+var RegisterRouter = require('./routes/register');
+
 var sequelize = require('./models').sequelize;
 
 var app = express();
 sequelize.sync();
-////
-//var Medicine = require('./models').Medicine;
-////
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,24 +24,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+		secret: 'keyboard cat',
+		resave: false,
+		saveUninitialize: true
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/db', DBrouter); 
-///////
-//app.use('/createdb', createDBrouter);
+app.use('/login', LoginRouter);
+app.use('/register', RegisterRouter);
 
-
-////////////
-/////////////////
 app.post('/test', function(req, res) {
-	var test1 = req.body.testA;
-	var test2 = req.body.testB;
+	var test1 = req.body.test1;
+	var test2 = req.body.test2;
 
 	console.log(test1);
 	console.log(test2);
 	
-	var test3 = "hello, world!";
+	var test3 = "Success";
 	res.send(test3);
 	console.log("sucessfully send");
 });

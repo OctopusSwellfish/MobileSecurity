@@ -2,11 +2,26 @@ var express = require('express');
 var router = express.Router();
 
 var Medicine = require('../models').Medicine;
-
+var User = require('../models').User;
+/*
+router.get('/dbdb', function(req, res, next) {
+	User.create({
+		user_id: 'root',
+		password: 'dodyd',
+		name: '애용',
+		age: '3',
+		sex: 'M',
+		flag: 1,
+});
+		
+});
+*/
 
 router.get('/dbtest', function(req, res, next) {
 	console.log("db get ??");
 	res.send("response");
+
+/*
 	Medicine.create({
 		name: '마그밀정',
 		ingredient: '수산화마그네슘 500mg',
@@ -187,7 +202,49 @@ router.get('/dbtest', function(req, res, next) {
 		company: '대웅제약',
 });
 
+	Medicine.create({
+		name: '다이크로짇정',
+		ingredient: '히드로클로로티아지드 25mg',
+		period: '성인 1회 25-100mg 1일 1-2회 경구투여',
+		effect: '고혈압, 악성고혈압, 심성부종, 신성부종 간성부종의 완화',
+		caution: '중증의 간기능장애 환자, 무뇨 환자, 급성 또는 중증의 신부전 환자, 저나틂/저칼륨혈증 환자, 애디슨병 환자 투여 금지',
+		company: '유한양행',
+});
 
+	Medicine.create({
+		name: '베타록정 100mg',
+		ingredient: '메토프롤롤타르타르산염 100mg',
+		period: '성인 1일 100mg을 아침에 1회 경구투여하거나 아침/저녁으로 2회 분할투여',
+		effect: '고혈압, 협심증, 빈맥성 부정맥의 완화',
+		caution: '당뇨병성 케토산증, 대사성 산증 환자, 서맥, 심인성 쇽 환자, 울혈성 심부전 환자, 중증의 저혈압 환자 투여 금지',
+		company: '유한양행',
+});
+	Medicine.create({
+		name: '신일피리독신정',
+		ingredient: '피리독신염산염 50mg',
+		period: '성인 1일 10~100mg 경구투여',
+		effect: '비타민 B(6) 결핍증의 예방 및 치료',
+		caution: '레보도파를 투여 받는 환자 투여 금지',
+		company: '신일제약',
+});
+	Medicine.create({
+		name: '코아프로벨정 150/12.5mg',
+		ingredient: '이르베사르탄 150mg, 히드로클로로티아지드 12.5mg',
+		period: '식사와 관계없이 1일 1회 경구투여',
+		effect: '단일요법으로 혈압이 적절히 조절되지 않는 환자',
+		caution: '임부, 수유부, 설폰아미드 약물 과민반응 환자 투여 금지',
+		company: '한독',
+});
+	Medicine.create({
+		name: '에이리스정',
+		ingredient: '레보노르게스트렐 0.1mg, 에티닐에스트라디올 0.02mg',
+		period: '1일 1정씩 21일간 경구투여하고 7일간 휴약',
+		effect: '피임, 이 약을 복용할 수 있는 여성의 중등도의 여드름 치료',
+		caution: '흡연 금, 에스트로겐 의존성 종양, 혈전성 동맥정맥염, 고혈압, 간장애, 로터증후군 환자 투여 금지',
+		company: '한국화이자제약',
+});
+
+*/
 //끝
 });
 
