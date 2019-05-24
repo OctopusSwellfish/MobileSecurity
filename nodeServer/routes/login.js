@@ -12,16 +12,16 @@ router.post('/', function(req, res, next) { //로그인할 때
 	console.log(id); 
 	console.log(password);
 
-	User.findOne({ where:{ user_id: id} }) //테이블 1개를 보냅니다
+	User.findOne({ where:{ user_id: id} }) //테이블 SQL 쿼리
 		.then(function(data)
 		{
-			if(data == null || data == undefined) { //then에는 커서가 담깁니다
+			if(data == null || data == undefined) { //data에는 커서가 담깁니다
 				console.log("로그인 자료 없음! ID: " +id);
 			
 				var response = {login: 'fail'}; //json형태로
 				res.json(response); //전송
 			
-			return;
+				return;
 			}
 			else if(data.password != password) {
 				console.log("로그인 암호 틀림! ID: " +id);
