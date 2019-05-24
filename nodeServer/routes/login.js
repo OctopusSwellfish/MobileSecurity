@@ -5,21 +5,21 @@ var session = require('express-session');
 
 var User = require('../models').User;
 
-router.post('/', function(req, res, next) {
-	var id = req.body.ID;
+router.post('/', function(req, res, next) { //로그인할 때
+	var id = req.body.ID; //아이디랑 비밀번호 받아옴
 	var password = req.body.Password;
 
-	console.log(id);
+	console.log(id); 
 	console.log(password);
 
-	User.findOne({ where:{ user_id: id} })
+	User.findOne({ where:{ user_id: id} }) //테이블 1개를 보냅니다
 		.then(function(data)
 		{
-			if(data == null || data == undefined) {
+			if(data == null || data == undefined) { //then에는 커서가 담깁니다
 				console.log("로그인 자료 없음! ID: " +id);
 			
-				var response = {login: 'fail'};
-				res.json(response);
+				var response = {login: 'fail'}; //json형태로
+				res.json(response); //전송
 			
 			return;
 			}
@@ -29,9 +29,10 @@ router.post('/', function(req, res, next) {
 				var response = {login: 'fail'};
 				res.json(response);
 			}else{
-				var sess = req.session;
-				sess.userid = id;
-				sess.username = data.name;
+				var sess = req.session; 
+				sess.userid = id; //세션 설정
+				sess.username = data.name; //세션 설정
+				console.log('로그인 성공! ID: '+id);
 				console.log('set session:' + sess);
 
 				var response = {login: 'Success'};
