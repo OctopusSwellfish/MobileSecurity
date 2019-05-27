@@ -3,7 +3,10 @@ var router = express.Router();
 
 var session = require('express-session');
 
+var sequelize = require('../models').sequelize;
 var User = require('../models').User;
+var Medicine = require('../models').Medicine;
+//var UserMedicine = require('../models').user_medicine;
 
 router.post('/', function(req, res, next) { //로그인할 때
 	var id = req.body.ID; //아이디랑 비밀번호 받아옴
@@ -34,9 +37,17 @@ router.post('/', function(req, res, next) { //로그인할 때
 				sess.username = data.name; //세션 설정
 				console.log('로그인 성공! ID: '+id);
 				console.log('set session:' + sess);
-
-				var response = {login: 'Success'};
+			///////
+				sequelize.query('select m.name, m.ingredient, m.period, m.effect, m.caution, m.company from medicines as m, user_medicine where user_medicine.userId=:ID and user_medicine.medicineId = m.id', {replacements: {ID: data.id}, type: sequelize.QueryTypes.SELECT
+					}).then(function(resultSet){
+					console.log(resultSet);
+				});
+			///////
+				var response = {login: 'Success', username:data.name};
+		
+		
 				res.json(response);
+				
 			}
 		})
 		.catch(function(err) {

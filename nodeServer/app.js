@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var DBrouter = require('./routes/test');
 var LoginRouter = require('./routes/login');
 var RegisterRouter = require('./routes/register');
+var MypageRouter = require('./routes/mypage');
 //추가한 라우터 목록 끝
 
 var sequelize = require('./models').sequelize;
@@ -38,6 +39,7 @@ app.use('/users', usersRouter);
 app.use('/db', DBrouter); 
 app.use('/login', LoginRouter);
 app.use('/register', RegisterRouter);
+app.use('/mypage', MypageRouter);
 
 app.post('/test', function(req, res) {
 	var test1 = req.body.test1;
