@@ -1,19 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
+var sequelize = require('../models').sequelize;
 var Medicine = require('../models').Medicine;
 var User = require('../models').User;
 
 
-router.post('/showAllmedicine', function(res, req) {
+router.post('/showAllmedicine', function(req, res) {
+	
+	var AllMedicine = req.body.AllMedicine;
+	console.log(AllMedicine);
+		
+
 		Medicine.findAll({
-		attributes: ['name', 'ingredient', 'period', 'effect', 'caution', 'company'], 	
-	})
+		attributes: ['name', 'ingredient', 'period', 'effect', 'caution', 'company'], type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet)
 		{
-			var Allmedicine = req.body.AllMedicine;
-			console.log(Allmedicine);
-	
 			var response = {AllMedicine: 'Success',
 					All_medi_list: resultSet
 					};
