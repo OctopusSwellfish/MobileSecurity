@@ -32,6 +32,7 @@ router.post('/', function(req, res, next) { //로그인할 때
 				var response = {login: 'fail'};
 				res.json(response);
 			}else{
+				var response = {login: 'Success', username:data.name};
 				var sess = req.session; 
 				sess.userid = id; //세션 설정
 				sess.username = data.name; //세션 설정
@@ -40,13 +41,15 @@ router.post('/', function(req, res, next) { //로그인할 때
 			///////
 				sequelize.query('select m.name, m.ingredient, m.period, m.effect, m.caution, m.company from medicines as m, user_medicine where user_medicine.userId=:ID and user_medicine.medicineId = m.id', {replacements: {ID: data.id}, type: sequelize.QueryTypes.SELECT
 					}).then(function(resultSet){
-					console.log(resultSet);
-				});
-			///////
-				var response = {login: 'Success', username:data.name};
-		
-		
-				res.json(response);
+					var response = {login: 'Success', 
+							username: data.name,
+							medi_list: resultSet
+							}; 
+					
+					res.json(response);
+					console.log('Successfully send');
+					console.log(response);
+					});
 				
 			}
 		})
