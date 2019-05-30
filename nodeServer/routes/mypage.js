@@ -42,7 +42,6 @@ router.post('/search', function(req, res) {
 	var keyword = req.body.SearchMedicine;
 	escape(keyword);
 	console.log(keyword);
-			
 	/*Medicine.findAll({
 		attribute: { exclude: ['id'] },
 		name: {
@@ -76,12 +75,11 @@ router.post('/addMedicine', function(req, res) {
 	
 	User.findOne({where: { user_id: sess_id} })
 		.then(function(data) {
-			const userID = data.id;	
+			var userID = data.id;	
 
     		 Medicine.findOne({where: { name: keyword } })
                	 .then(function(result) {
-                	        const medicineID = result.id;
-                        	console.log(keyword+'의 인덱스: '+medicineID);
+                	        var medicineID = result.id;
 				
 				sequelize.query('select * from user_medicine where userId='+userID+' and medicineId='+medicineID,
   {type: sequelize.QueryTypes.SELECT})
@@ -93,42 +91,59 @@ router.post('/addMedicine', function(req, res) {
 						AddMedicine: 'Success'
 						};
 					res.json(response);
-					console.log('성공 inser into user_medicine' + response);
+					console.log('중복된 데이터가 없어서 데이터 삽입에 성공하였습니다.');
+					console.log(sess_id+'의'+keyword+'를 추가하였습니다.');
 				});
                           }else if(rawResult!=null) {
                                  var response = {
                                          AddMedicine: 'fail'
                                  };
 				res.json(response);
-				console.log('실패 fail! '+response);
+				console.log('실패! 이미 데이터가 존재합니다.');
                          }
-                  });
+                  }).catch(function(err){
+				console.log('추가 프로세스 오류:'+err);
+			});
  
-
-
                		 });
 
 
 		});
 
-
-
-/*
-	sequelize.query('select * from user_medicine where userId='+userID+'and medicineId='+medicineID,
- {replacements: [{USERID: userID, MEDICINEID: medicineID}], type: sequelize.QueryTypes.SELECT})
-		.then(function(data) {
-			if(data===null) {
-				//등록
-			}else if(data!=null) {
-				var response = {
-					AddMedicine: 'fail'
-				};
-			}
-
-		});
-
-*/				
 });
 
+router.post('/deleteMedicine', function(req, res) {
+	var sess_id = req.body.ID;
+	var keyword = req.body.DeleteMedicine;
+
+	User.findOne({where: {user_id: sess_id} })
+		.then(function(data) {
+			var userID = data.id;
+		
+		Medicine.findOne({where: {name: keyword } })
+		.then(function(result) {
+			var medicineID = result.id;
+			
+			sequelize.query('delete from user_medicine where userId='+userID+' and medicineId='+medicineID, {type: sequelize.QueryTypes.DELETE})
+			.then(function(resultSet){
+				var response = {Delete: 'Success'};
+				res.json(response);
+				console.log('요청을 수행하여, '+sess_id+'의 '+keyword+'을(를) 삭제하였습니다.');
+			}).catch(function(err){
+				console.log('삭제 프로세스 오류 : ' +err);
+			});
+		
+		});
+	
+	});	
+
+
+});
+
+router.post('/changeName', function(req, res) {
+});
+
+router.post('/changePassword', function(req, res) {
+});
 
 module.exports = router;
