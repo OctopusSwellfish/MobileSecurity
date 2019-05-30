@@ -75,9 +75,12 @@ router.post('/addMedicine', function(req, res) {
                	 .then(function(result) {
                 	        var medicineID = result.id;
 				
-				sequelize.query('select * from user_medicine where userId='+userID+' and medicineId='+medicineID,
-  {type: sequelize.QueryTypes.SELECT})
-                 .then(function(rawResult) {
+		sequelize.query('select * from user_medicine where userId=:USERID and medicineId=:MEDICINEID', {
+			replacements: { USERID: userID,
+					MEDICINEID: medicineID
+					},
+			type: sequelize.QueryTypes.SELECT})
+                	 .then(function(rawResult) {
 			console.log(rawResult);
 			if(rawResult.length===0) {
                                   sequelize.query('insert into user_medicine values(now(), now(), '+userID+', '+medicineID+')', {type: sequelize.QueryTypes.CREATE}).then(function(finalResult) {
@@ -118,7 +121,11 @@ router.post('/deleteMedicine', function(req, res) {
 		.then(function(result) {
 			var medicineID = result.id;
 			
-			sequelize.query('delete from user_medicine where userId='+userID+' and medicineId='+medicineID, {type: sequelize.QueryTypes.DELETE})
+			sequelize.query('delete from user_medicine where userId=:USERID and medicineId=:MEDICINEID', {
+				replacements: { USERID: userID,
+						MEDICINEID: medicineID
+						},
+				type: sequelize.QueryTypes.DELETE})
 			.then(function(resultSet){
 				var response = {Delete: 'Success'};
 				res.json(response);
