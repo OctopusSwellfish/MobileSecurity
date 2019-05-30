@@ -3,6 +3,8 @@ var router = express.Router();
 
 var session = require('express-session');
 
+var jwt = require('jsonwebtoken');
+var secretObj = require('../config/jwt');
 var sequelize = require('../models').sequelize;
 var User = require('../models').User;
 var Medicine = require('../models').Medicine;
@@ -11,7 +13,8 @@ var Medicine = require('../models').Medicine;
 router.post('/', function(req, res, next) { //로그인할 때
 	var id = req.body.ID; //아이디랑 비밀번호 받아옴
 	var password = req.body.Password;
-
+	escape(id);
+	escape(password);
 	console.log(id); 
 	console.log(password);
 
@@ -33,11 +36,20 @@ router.post('/', function(req, res, next) { //로그인할 때
 				res.json(response);
 			}else{
 				var response = {login: 'Success', username:data.name};
-				var sess = req.session; 
-				sess.userid = id; //세션 설정
-				sess.username = data.name; //세션 설정
+				req.session.userid = id; //세션 설정
+				req.session.username = data.name; //세션 설정
 				console.log('로그인 성공! ID: '+id);
-				console.log('set session:' + sess);
+
+				var token = jwt.sign({
+					userid: data.user_id
+				},
+					secretObj.secret,
+				{
+					expiresIn: '5m'
+				})	
+				
+				res.cookie("user", token);
+				console.log(token);
 			///////
 				sequelize.query('select m.name, m.ingredient, m.period, m.effect, m.caution, m.company from medicines as m, user_medicine where user_medicine.userId=:ID and user_medicine.medicineId = m.id', {replacements: {ID: data.id}, type: sequelize.QueryTypes.SELECT
 					}).then(function(resultSet){
@@ -47,9 +59,10 @@ router.post('/', function(req, res, next) { //로그인할 때
 							}; 
 					
 					res.json(response);
-					console.log('Successfully send');
-					console.log(response);
-					});
+					console.log(response);	
+					console.log("Successfully send");
+
+				});
 				
 			}
 		})
