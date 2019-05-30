@@ -66,5 +66,6 @@ fastlane/readme.md
 
 ###sequelize database config file
 config.json
+jwt.js
 
 
