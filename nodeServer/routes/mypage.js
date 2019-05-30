@@ -42,14 +42,8 @@ router.post('/search', function(req, res) {
 	var keyword = req.body.SearchMedicine;
 	escape(keyword);
 	console.log(keyword);
-	/*Medicine.findAll({
-		attribute: { exclude: ['id'] },
-		name: {
-			[Op.substring]: keyword
-		}
-		
-	})*/
-	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like \'%'+keyword+'%\'', {/* {replacements: { ID: keyword},*/ type: sequelize.QueryTypes.SELECT})
+	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like :searchkeyword',
+ { replacements: { searchkeyword: '%'+keyword+'%' }, type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet) {
 		var response = {SearchMedicine: 'Success',
 				Search_medi_list: resultSet
@@ -92,7 +86,7 @@ router.post('/addMedicine', function(req, res) {
 						};
 					res.json(response);
 					console.log('중복된 데이터가 없어서 데이터 삽입에 성공하였습니다.');
-					console.log(sess_id+'의'+keyword+'를 추가하였습니다.');
+					console.log(sess_id+'의'+keyword+'를(을) 추가하였습니다.');
 				});
                           }else if(rawResult!=null) {
                                  var response = {
@@ -141,6 +135,7 @@ router.post('/deleteMedicine', function(req, res) {
 });
 
 router.post('/changeName', function(req, res) {
+
 });
 
 router.post('/changePassword', function(req, res) {
