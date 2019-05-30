@@ -142,6 +142,24 @@ router.post('/deleteMedicine', function(req, res) {
 });
 
 router.post('/changeName', function(req, res) {
+	var AlterName = req.body.AlterName;
+	var sess_id = req.body.ID;
+	User.findOne({where: {user_id: sess_id} })
+		.then(function(data) {
+			var previousName = data.name;
+
+			User.update({
+				name: AlterName
+			}, {
+				where: { name: previousName },
+			});	
+			var response = {ModifyName: 'Success'};
+			res.json(response);			
+			console.log(previousName+'을(를) '+AlterName+'으로 변경하였습니다.');
+		})
+		.catch(function(err) {
+			console.log("이름 바꾸기 프로세스 오류 +" +err);
+		});
 
 });
 
