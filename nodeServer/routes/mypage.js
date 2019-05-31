@@ -162,8 +162,38 @@ router.post('/changeName', function(req, res) {
 		});
 
 });
-
+/*
+router.post('/Modify', function(req, res) {
+	var sess_id = req.body.ID;
+	User.findOne({where: {user_id: sess_id } })
+		.then(function(data) {
+				var passWord = data.password
+				
+				var response = {MyPage: passWord};	
+			})
+		.catch(function(err) {
+				console.log("수정하기 오류 : "+ err);
+			});
+});
+*/
 router.post('/changePassword', function(req, res) {
+	var AlterPassword = req.body.NewPassword
+	var sess_id = req.body.ID;
+	User.findOne({where: {user_id: sess_id} })
+		.then(function(data) {
+			var previousPassword = data.password;
+
+			User.update({
+				password: AlterPassword
+			}, {
+				where: {password: previousPassword },
+			});
+			var response = {ModifyPassword: 'Success'};
+			res.json(response);
+			console.log(previousPassword+'을(를) '+AlterPassword+'으로 변경하였습니다.');
+		}).catch(function(err) {
+			console.log("비밀번호 바꾸기 프로세스 오류 +"+err);
+		});
 });
 
 module.exports = router;
