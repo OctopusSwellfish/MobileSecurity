@@ -8,7 +8,7 @@ var sequelize = require('../models').sequelize;
 var Medicine = require('../models').Medicine;
 var User = require('../models').User;
 
-
+var Cipher = require('./cipher');
 router.post('/showAllmedicine', function(req, res) {
 //	var token = req.cookies.user;
 //	console.log(token);	
@@ -190,7 +190,8 @@ router.post('/changePassword', function(req, res) {
 			});
 			var response = {ModifyPassword: 'Success'};
 			res.json(response);
-			console.log(previousPassword+'을(를) '+AlterPassword+'으로 변경하였습니다.');
+			//console.log(previousPassword+'을(를) '+AlterPassword+'으로 변경하였습니다.');
+			console.log("비밀번호 변경 성공");
 		}).catch(function(err) {
 			console.log("비밀번호 바꾸기 프로세스 오류 +"+err);
 		});
