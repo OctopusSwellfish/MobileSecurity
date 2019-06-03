@@ -16,15 +16,15 @@ var crypto = require('crypto');
 var aes256Cipher = require('./aes256Cipher');
 
 router.post('/', function(req, res, next) { //로그인할 때
-	var id ='myThTJiPWPU+25C3TUuXgw==';
-// req.body.ID;
+	var id = req.body.ID;
 	var password = req.body.Password;
 	console.log("처음 받아온 ID ==> "+id);
 	
 
 var qwerqwer = Buffer.from(id, 'base64').toString('hex');
+var asdfasdf = Buffer.from(password, 'base64').toString('hex');
+//스페이스바는 플러스(+) 기호로 바꿔주는 것 잊지말기
 console.log('qwerqwer ==> '+qwerqwer);	
-
 		
 
 	var key = 'myVeryTopSecretK';
@@ -33,11 +33,10 @@ console.log('qwerqwer ==> '+qwerqwer);
 	//var test_iv = aes256Cipher.toUTF8array(iv);
 	console.log("여기까지!");
 
-	var fucking = aes256Cipher.decrypt(key, asdfasdf);
+	var last_id = aes256Cipher.decrypt(key, qwerqwer);
+	var last_password = aes256Cipher.decrypt(key, asdfasdf);
 
-	console.log(password);
-
-	User.findOne({ where:{ user_id: id} }) //테이블 SQL 쿼리
+	User.findOne({ where:{ user_id: last_id} }) //테이블 SQL 쿼리
 		.then(function(data)
 		{
 			if(data == null || data == undefined) { //data에는 커서가 담깁니다
@@ -48,7 +47,7 @@ console.log('qwerqwer ==> '+qwerqwer);
 			
 				return;
 			}
-			else if(data.password != password) {
+			else if(data.password != last_password/*password*/) {
 				console.log("로그인 암호 틀림! ID: " +id);
 			
 				var response = {login: 'fail'};

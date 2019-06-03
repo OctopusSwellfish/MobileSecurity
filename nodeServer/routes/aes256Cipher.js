@@ -21,13 +21,19 @@ var decrypt = function(cryptKey, encrypted) {
 	console.log("키값==> "+ cryptKey);
 //	console.log("IV값==> "+ cryptIv);
 	console.log("암호문==> "+ encrypted);
-	//encrypted = new Buffer(encrypted, 'base64').toString('hex');
-	//encrypted = Buffer.from(encrypted, 'base64').toString('binary');
-	var decipher = crypto.createDecipher('aes-128-cbc', cryptKey);
+
+	  //var iv = '1234567890123456abcdefg';
+
+	var asdfasdf = Buffer.from(cryptKey, 'ascii').toString('ascii');
+	console.log("asdfasdf ==> " +asdfasdf);
+	var decipher = crypto.createDecipheriv('aes-128-ecb', cryptKey, null);
+	//var decipher = crypto.createDecipheriv('aes-128-cbc', cryptKey, iv);
 	console.log('createdecipheriv완료');
-	var decrypted = decipher.update(encrypted, 'hex', 'utf-8');
-	console.log('update완료');
-	decrypted += decipher.final('utf-8');
+		
+	var decrypted = decipher.update(encrypted, 'hex', 'utf8');
+	console.log("decrypted ====> " +decrypted);	
+console.log('update완료');
+	decrypted += decipher.final('utf8');
 	
 	console.log('final완료');
 	console.log(decrypted);
