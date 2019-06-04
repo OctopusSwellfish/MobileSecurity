@@ -8,22 +8,19 @@ var sequelize = require('../models').sequelize;
 var Medicine = require('../models').Medicine;
 var User = require('../models').User;
 
-var Cipher = require('./cipher');
+var aes128Cipher = require('./aes128Cipher');
+
 router.post('/showAllmedicine', function(req, res) {
-//	var token = req.cookies.user;
-//	console.log(token);	
-//	var decoded =jwt.verify(token, secretObj.secret);
-//	console.log(decoded);
-	var reqStatus = req.body.AllMedicine;
-	console.log(reqStatus);
 		
 	Medicine.findAll({
 		attributes: { exclude: ['id'] } 
 	})
 	.then(function(resultSet)
 		{
-			var response = {AllMedicine: 'Success',
-					All_medi_list: resultSet
+			var Success = aes128Cipher.encrypt('Success');
+			var all_medi = aes128Cipher.encrypt(JSON.stringify(resultSet));
+			var response = {AllMedicine: Success,
+					All_medi_list: all_medi
 					};
 			res.json(response);
 			

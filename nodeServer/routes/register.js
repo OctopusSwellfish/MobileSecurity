@@ -3,8 +3,6 @@ var router = express.Router();
 
 var User = require('../models').User;
 
-var Cipher = require('./cipher');
-
 //회원가입
 router.post('/', function(req, res, next) {
 	var user_ID = req.body.ID;
