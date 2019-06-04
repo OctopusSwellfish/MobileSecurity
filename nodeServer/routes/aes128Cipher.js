@@ -20,9 +20,9 @@ var encrypt = function(plainData) {
 var HMAC = function(data) {
 	console.log("");
 	console.log("******HMAC 시작!!******");
-	var hmac = crypto.createHmac('sha256', cryptKey);
+	var hmac = crypto.createHmac('SHA256', cryptKey);
 	var pass = hmac.update(data).digest('hex');
-	console.log("HMAC값 ==>" pass);
+	console.log("HMAC값 ==>"+pass);
 	console.log("******HMAC 끝!!!!******");
 	console.log("");
 	
