@@ -59,8 +59,14 @@ router.post('/search', function(req, res) {
 
 	
 router.post('/addMedicine', function(req, res) {
-	var sess_id = aes128Cipher.decrypt(req.body.ID);
-	var keyword = aes128Cipher.decrypt(req.body.AddMedicine);
+	var temp_sess_id = req.body.ID;
+	var temp_keyword = req.body.AddMedicine;
+	
+	var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
+	var temp_k = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
+
+	var sess_id = aes128Cipher.decrypt(temp_s);
+	var keyword = aes128Cipher.decrypt(temp_k);
 	
 	User.findOne({where: { user_id: sess_id} })
 		.then(function(data) {
@@ -107,8 +113,14 @@ router.post('/addMedicine', function(req, res) {
 });
 
 router.post('/deleteMedicine', function(req, res) {
-	var sess_id = aes128Cipher.decrypt(req.body.ID);
-	var keyword = aes128Cipher.decrypt(req.body.DeleteMedicine);	
+	var temp_sess_id = req.body.ID;
+        var temp_keyword = req.body.AddMedicine;
+
+        var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
+        var temp_k = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
+
+        var sess_id = aes128Cipher.decrypt(temp_s);
+        var keyword = aes128Cipher.decrypt(temp_k);
 	
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
@@ -141,8 +153,15 @@ router.post('/deleteMedicine', function(req, res) {
 });
 
 router.post('/changeName', function(req, res) {
-	var AlterName = aes128Cipher.decrypt(req.body.AlterName);
-	var sess_id = aes128Cipher.decrypt(req.body.ID);
+	var temp_AlterName = req.body.AlterName;
+	var temp_sess_id = req.body.ID;
+	
+	var temp_a = v.replaceAll(temp_AlterName, String.fromCharCode(32), '+');
+	var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
+
+	var AlterName = aes128Cipher.decrypt(temp_a);
+	var sess_id = aes128Cipher.decrypt(temp_s);
+
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
 			var previousName = data.name;
@@ -163,8 +182,15 @@ router.post('/changeName', function(req, res) {
 
 });
 router.post('/changePassword', function(req, res) {
-	var AlterPassword = aes128Cipher.decrypt(req.body.NewPassword);
-	var sess_id = aes128Cipher.decrypt(req.body.ID);
+	var temp_AlterPassword = req.body.NewPassword;
+	var temp_sess_id = req.body.ID;
+		
+	var temp_a = v.replaceAll(temp_AlterPassword, String.fromCharCode(32), '+');
+	var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');	
+
+	var AlterPassword = aes128Cipher.decrypt(temp_a);
+	var sess_id = aes128Cipher.decrypt(temp_s);
+
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
 			var previousPassword = data.password;
