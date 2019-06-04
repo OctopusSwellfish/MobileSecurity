@@ -12,7 +12,12 @@ var aes128Cipher = require('./aes128Cipher');
 router.post('/', function(req, res, next) { //로그인할 때
 	var id = req.body.ID;
 	var password = req.body.Password;
+
+//	first_id.replace(/\s/,"+");
+//	console.log(first_id);
+	
 	console.log("처음 받아온 암호문(ID) ==> "+id);
+	
 	console.log("처음 받아온 암호문(password) ==>"+password);
 	
 	var last_id = aes128Cipher.decrypt(id);

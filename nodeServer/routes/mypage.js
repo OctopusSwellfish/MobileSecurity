@@ -35,7 +35,7 @@ router.post('/showAllmedicine', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-	var encrypted_keyword = aes128Cipher.encrypt(req.body.SearchMedicine);
+	var keyword = aes128Cipher.decrypt(req.body.SearchMedicine);
 	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like :searchkeyword',
  { replacements: { searchkeyword: '%'+keyword+'%' }, type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet) {
