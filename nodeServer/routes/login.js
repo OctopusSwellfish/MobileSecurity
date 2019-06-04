@@ -10,15 +10,31 @@ var Medicine = require('../models').Medicine;
 var aes128Cipher = require('./aes128Cipher');
 var v = require('voca');
 
+var crypto = require('crypto');
+
 router.post('/', function(req, res, next) { //로그인할 때
 	var temp_id = req.body.ID;
 	var temp_password = req.body.Password;
+	var temp_HMAC = req.body.MAC;
+	console.log("hi");
+	console.log("temp+HMAC ==> " + temp_HMAC);
 //	var HEHEHE = req.body.HEHEHE;
 //	console.log("HEHEHE ==> "+HEHEHE);
 
 	var temp_i = v.replaceAll(temp_id, String.fromCharCode(32), '+');
 	var temp_p = v.replaceAll(temp_password, String.fromCharCode(32), '+');
+	var temp_H = v.replaceAll(temp_HMAC, String.fromCharCode(32), '+');
 	
+	console.log(temp_H);
+
+	var hmac = crypto.createHmac('sha256', 'myVeryTopSecretK');
+	var pass = hmac.update(temp_i).digest('hex');
+		
+	console.log('pass==> '+pass);
+	
+	var asdf = Buffer.from(pass, 'hex').toString('base64');
+
+	console.log('asdf ==> ' + asdf);
 	var id = temp_i;
 	var password = temp_p;
 
