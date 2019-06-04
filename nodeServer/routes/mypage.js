@@ -35,20 +35,19 @@ router.post('/showAllmedicine', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-//	console.log(req.session.userid);
-	var keyword = req.body.SearchMedicine;
-	escape(keyword);
-	console.log(keyword);
+	var encrypted_keyword = aes128Cipher.encrypt(req.body.SearchMedicine);
 	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like :searchkeyword',
  { replacements: { searchkeyword: '%'+keyword+'%' }, type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet) {
-		var response = {SearchMedicine: 'Success',
-				Search_medi_list: resultSet
-				};
+			var Success= aes128Cipher.encrypt('Success');
+			var Search_medi = aes128Cipher.encrypt(JSON.stringify(resultSet));
+			var response={
+			SearchMedicine: Success,
+			Search_medi_list: Search_medi
+			};
 		
 		res.json(response);
 
-	//	console.log(response);
 		console.log('response Success!');
 	})
 	.catch(function(err) {
@@ -58,11 +57,8 @@ router.post('/search', function(req, res) {
 
 	
 router.post('/addMedicine', function(req, res) {
-	var sess_id = req.body.ID;
-	var keyword = req.body.AddMedicine;
-	
-	console.log(sess_id);
-	console.log(keyword);
+	var sess_id = aes128Cipher.decrypt(req.body.ID);
+	var keyword = aes128Cipher.decrypt(req.body.AddMedicine);
 	
 	User.findOne({where: { user_id: sess_id} })
 		.then(function(data) {
@@ -81,16 +77,18 @@ router.post('/addMedicine', function(req, res) {
 			console.log(rawResult);
 			if(rawResult.length===0) {
                                   sequelize.query('insert into user_medicine values(now(), now(), '+userID+', '+medicineID+')', {type: sequelize.QueryTypes.CREATE}).then(function(finalResult) {
+					var Success = aes128Cipher.encrypt('Success');
 					var response = {
-						AddMedicine: 'Success'
+						AddMedicine: Success
 						};
 					res.json(response);
 					console.log('중복된 데이터가 없어서 데이터 삽입에 성공하였습니다.');
 					console.log(sess_id+'의'+keyword+'를(을) 추가하였습니다.');
 				});
                           }else if(rawResult!=null) {
+				var fail = aes128Cipher.encrypt('Fail');
                                  var response = {
-                                         AddMedicine: 'fail'
+                                         AddMedicine: fail
                                  };
 				res.json(response);
 				console.log('실패! 이미 데이터가 존재합니다.');
@@ -107,9 +105,9 @@ router.post('/addMedicine', function(req, res) {
 });
 
 router.post('/deleteMedicine', function(req, res) {
-	var sess_id = req.body.ID;
-	var keyword = req.body.DeleteMedicine;
-
+	var sess_id = aes128Cipher.decrypt(req.body.ID);
+	var keyword = aes128Cipher.decrypt(req.body.DeleteMedicine);	
+	
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
 			var userID = data.id;
@@ -124,8 +122,10 @@ router.post('/deleteMedicine', function(req, res) {
 						},
 				type: sequelize.QueryTypes.DELETE})
 			.then(function(resultSet){
-				var response = {Delete: 'Success'};
+				var Success = aes128Cipher.encrypt('Success');
+				var response = {Delete: Success};
 				res.json(response);
+				console.log(response);
 				console.log('요청을 수행하여, '+sess_id+'의 '+keyword+'을(를) 삭제하였습니다.');
 			}).catch(function(err){
 				console.log('삭제 프로세스 오류 : ' +err);
@@ -139,8 +139,8 @@ router.post('/deleteMedicine', function(req, res) {
 });
 
 router.post('/changeName', function(req, res) {
-	var AlterName = req.body.AlterName;
-	var sess_id = req.body.ID;
+	var AlterName = aes128Cipher.decrypt(req.body.AlterName);
+	var sess_id = aes128Cipher.decrypt(req.body.ID);
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
 			var previousName = data.name;
@@ -149,8 +149,9 @@ router.post('/changeName', function(req, res) {
 				name: AlterName
 			}, {
 				where: { name: previousName },
-			});	
-			var response = {ModifyName: 'Success'};
+			});
+			var Success = aes128Cipher.encrypt('Success');	
+			var response = {ModifyName: Success};
 			res.json(response);			
 			console.log(previousName+'을(를) '+AlterName+'으로 변경하였습니다.');
 		})
@@ -159,23 +160,9 @@ router.post('/changeName', function(req, res) {
 		});
 
 });
-/*
-router.post('/Modify', function(req, res) {
-	var sess_id = req.body.ID;
-	User.findOne({where: {user_id: sess_id } })
-		.then(function(data) {
-				var passWord = data.password
-				
-				var response = {MyPage: passWord};	
-			})
-		.catch(function(err) {
-				console.log("수정하기 오류 : "+ err);
-			});
-});
-*/
 router.post('/changePassword', function(req, res) {
-	var AlterPassword = req.body.NewPassword
-	var sess_id = req.body.ID;
+	var AlterPassword = aes128Cipher.decrypt(req.body.NewPassword);
+	var sess_id = aes128Cipher.decrypt(req.body.ID);
 	User.findOne({where: {user_id: sess_id} })
 		.then(function(data) {
 			var previousPassword = data.password;
@@ -185,9 +172,9 @@ router.post('/changePassword', function(req, res) {
 			}, {
 				where: {password: previousPassword },
 			});
-			var response = {ModifyPassword: 'Success'};
+			var Success = aes128Cipher.encrypt('Success');
+			var response = {ModifyPassword: Success};
 			res.json(response);
-			//console.log(previousPassword+'을(를) '+AlterPassword+'으로 변경하였습니다.');
 			console.log("비밀번호 변경 성공");
 		}).catch(function(err) {
 			console.log("비밀번호 바꾸기 프로세스 오류 +"+err);
