@@ -25,16 +25,9 @@ router.post('/', function(req, res, next) { //로그인할 때
 	var temp_p = v.replaceAll(temp_password, String.fromCharCode(32), '+');
 	var temp_H = v.replaceAll(temp_HMAC, String.fromCharCode(32), '+');
 	
-	console.log(temp_H);
+	var str = aes128Cipher.HMAC(temp_i);
 
-	var hmac = crypto.createHmac('sha256', 'myVeryTopSecretK');
-	var pass = hmac.update(temp_i).digest('hex');
-		
-	console.log('pass==> '+pass);
-	
-	var asdf = Buffer.from(pass, 'hex').toString('base64');
-
-	console.log('asdf ==> ' + asdf);
+	console.log('asdf ==> ' + str);
 	var id = temp_i;
 	var password = temp_p;
 

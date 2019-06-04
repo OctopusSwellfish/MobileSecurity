@@ -17,6 +17,18 @@ var encrypt = function(plainData) {
 	return Buffer.from(encrypted, 'hex').toString('base64');
 };
 
+var HMAC = function(data) {
+	console.log("");
+	console.log("******HMAC 시작!!******");
+	var hmac = crypto.createHmac('sha256', cryptKey);
+	var pass = hmac.update(data).digest('hex');
+	console.log("HMAC값 ==>" pass);
+	console.log("******HMAC 끝!!!!******");
+	console.log("");
+	
+	return Buffer.from(pass, 'hex').toString('base64');
+};
+
 
 var decrypt = function(encrypted) {
 	console.log("");
@@ -39,3 +51,4 @@ var decrypt = function(encrypted) {
 module.exports = AESCrypt;
 module.exports.encrypt = encrypt;
 module.exports.decrypt = decrypt;
+module.exports.HMAC = HMAC;
