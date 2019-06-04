@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 	},
 //비번
 	password: {
-		type: DataTypes.STRING(20),
+		type: DataTypes.STRING(100),
 		allowNull: false,
 	},
 //유저이름
