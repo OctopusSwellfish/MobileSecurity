@@ -5,6 +5,7 @@ var AESCrypt = {};
 const cryptKey = 'myVeryTopSecretK';
 
 var encrypt = function(plainData) {
+	console.log("");
 	console.log("======암호화 시작!!======");
 	console.log("암호화 할 평문: "+plainData);
 	var encipher = crypto.createCipheriv('aes-128-ecb', cryptKey, null);
@@ -12,11 +13,13 @@ var encrypt = function(plainData) {
 	encrypted += encipher.final('hex');
 	console.log("암호화 된 암호문: " + encrypted);
 	console.log("======암호화 끝!!!!======");
+	console.log("");
 	return Buffer.from(encrypted, 'hex').toString('base64');
 };
 
 
 var decrypt = function(encrypted) {
+	console.log("");
 	console.log("######복호화 시작!!######");
 	console.log("복호화 할 암호문: "+encrypted);
 	var buffer_text = Buffer.from(encrypted, 'base64').toString('hex');	
@@ -28,6 +31,7 @@ var decrypt = function(encrypted) {
 	
 	console.log("복호화 된 복호문: "+decrypted);
 	console.log("######복호화 끝!!!!######");
+	console.log("");
 	return decrypted;
 
 };

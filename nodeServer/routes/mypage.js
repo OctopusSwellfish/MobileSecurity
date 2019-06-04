@@ -9,7 +9,7 @@ var Medicine = require('../models').Medicine;
 var User = require('../models').User;
 
 var aes128Cipher = require('./aes128Cipher');
-
+var v = require('voca');
 router.post('/showAllmedicine', function(req, res) {
 		
 	Medicine.findAll({
@@ -35,7 +35,9 @@ router.post('/showAllmedicine', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-	var keyword = aes128Cipher.decrypt(req.body.SearchMedicine);
+	var temp_keyword = req.body.SearchMedicine;
+	var temp_i = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
+	var keyword = aes128Cipher.decrypt(temp_i);
 	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like :searchkeyword',
  { replacements: { searchkeyword: '%'+keyword+'%' }, type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet) {

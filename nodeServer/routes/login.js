@@ -8,14 +8,20 @@ var User = require('../models').User;
 var Medicine = require('../models').Medicine;
 
 var aes128Cipher = require('./aes128Cipher');
+var v = require('voca');
 
 router.post('/', function(req, res, next) { //로그인할 때
-	var id = req.body.ID;
-	var password = req.body.Password;
+	var temp_id = req.body.ID;
+	var temp_password = req.body.Password;
+//	var HEHEHE = req.body.HEHEHE;
+//	console.log("HEHEHE ==> "+HEHEHE);
 
-//	first_id.replace(/\s/,"+");
-//	console.log(first_id);
+	var temp_i = v.replaceAll(temp_id, String.fromCharCode(32), '+');
+	var temp_p = v.replaceAll(temp_password, String.fromCharCode(32), '+');
 	
+	var id = temp_i;
+	var password = temp_p;
+
 	console.log("처음 받아온 암호문(ID) ==> "+id);
 	
 	console.log("처음 받아온 암호문(password) ==>"+password);
