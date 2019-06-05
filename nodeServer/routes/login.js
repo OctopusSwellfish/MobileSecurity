@@ -27,23 +27,12 @@ router.post('/', function(req, res, next) { //로그인할 때
 
 	//hmac검증
 	var hmac = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_i).digest('hex');
-	var h_mac = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_password).digest('hex');
+	var h_mac = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_p).digest('hex');
 	var hmac_str = Buffer.from(hmac, 'hex').toString('base64');
 	var h_mac_str = Buffer.from(h_mac, 'hex').toString('base64');
 
-	console.log("맥아이디"+temp_HMAC);
-	console.log("맥아이디(내꺼, 위에꺼는 남에꺼)"+hmac_str);
-	
-	console.log("맥패스워드오빠꺼"+temp_HMAC_PASSWORD.length);
-	console.log("맥패수어드내꺼?"+h_mac_str.length);	
-	console.log("내꺼맥값"+ h_mac_str);
-	console.log("상대방맥값"+temp_HMAC_PASSWORD);	
 	if(hmac_str!=temp_H || h_mac_str!=temp_H_P){ //mac 값 검증
 		console.log("MAC값이 다릅니다.");
-		var fail = aes128Cipher.encrypt('fail');
-		var response = {login: fail};
-		res.json(response);
-
 		return;
 	}
 

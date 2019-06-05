@@ -46,10 +46,9 @@ router.post('/showAllmedicine', function(req, res) {
 router.post('/search', function(req, res) {
 	var temp_keyword = req.body.SearchMedicine;
 	var temp_i = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
-	var keyword = aes128Cipher.decrypt(temp_i);
 	
 	var temp_hmac_keyword = req.body.MAC_SearchMedicine;
-	var temp_h = v.replaceAll(temp_hmac_keword, String.fromCharCode(32), '+');
+	var temp_h = v.replaceAll(temp_hmac_keyword, String.fromCharCode(32), '+');
 	
 	var mac_h = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_i).digest('hex');
 	var mac_h_buf = Buffer.from(mac_h, 'hex').toString('base64');
@@ -58,7 +57,8 @@ router.post('/search', function(req, res) {
 		console.log("맥 값이 다릅니다.");
 		return;
 	}	
-
+	
+	var keyword = aes128Cipher.decrypt(temp_i);
 	sequelize.query('select name, ingredient, period, effect, caution, company from medicines where name like :searchkeyword',
  { replacements: { searchkeyword: '%'+keyword+'%' }, type: sequelize.QueryTypes.SELECT})
 	.then(function(resultSet) {
@@ -70,7 +70,7 @@ router.post('/search', function(req, res) {
 
 			let hmac_search = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(Search_medi).digest('hex');
 			let hmac_search_buf = Buffer.from(hmac_search, 'hex').toString('base64');
-
+			
 			var response={
 			SearchMedicine: Success,
 			Search_medi_list: Search_medi,
@@ -92,7 +92,7 @@ router.post('/addMedicine', function(req, res) {
 	var temp_sess_id = req.body.ID;
 	var temp_keyword = req.body.AddMedicine;
 	var temp_mac_sess_id = req.body.MAC_ID;
-	var temp_mac_keyword = req.body.MAD_AddMedicine;
+	var temp_mac_keyword = req.body.MAC_AddMedicine;
 
 	var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
 	var temp_k = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
@@ -109,6 +109,7 @@ router.post('/addMedicine', function(req, res) {
 
 	if(temp_m_s!=hmac_sess_buf || temp_m_k!=hmac_key_buf) {
 		console.log("MAC 값이 다릅니다.");
+		
 		return;
 	}
 
@@ -169,23 +170,24 @@ router.post('/addMedicine', function(req, res) {
 
 router.post('/deleteMedicine', function(req, res) {
 	var temp_sess_id = req.body.ID;
-        var temp_keyword = req.body.AddMedicine;
+        var temp_keyword = req.body.DeleteMedicine;
 	var mac_sess_id = req.body.MAC_ID;
-	var mac_sess_keyword = req.body.MAC_AddMedicine;
-
-        var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
+	var mac_sess_keyword = req.body.MAC_DeleteMedicine;
+        
+	var temp_s = v.replaceAll(temp_sess_id, String.fromCharCode(32), '+');
         var temp_k = v.replaceAll(temp_keyword, String.fromCharCode(32), '+');
 	var temp_m_s = v.replaceAll(mac_sess_id, String.fromCharCode(32), '+');
 	var temp_m_k = v.replaceAll(mac_sess_keyword, String.fromCharCode(32), '+');
-
+	
 	var mac_sess_str = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_s).digest('hex');
 	var mac_key_str = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(temp_k).digest('hex');
-
+	
 	var mac_sess_buf = Buffer.from(mac_sess_str, 'hex').toString('base64');
 	var mac_key_buf = Buffer.from(mac_key_str, 'hex').toString('base64');
-
+	
 	if(mac_sess_buf!=temp_m_s || mac_key_buf!=temp_m_k){
 		console.log("MAC 값이 다릅니다.");
+		console.log("상대방맥값(키워드):"+temp_m_k);
 		return;
 	}
 
@@ -212,7 +214,7 @@ router.post('/deleteMedicine', function(req, res) {
 				let mac_Success_buf = Buffer.from(mac_Success, 'hex').toString('base64');
 
 				var response = {Delete: Success, MAC_Delete: mac_Success_buf};
-				console.log(reponse);
+				console.log(response);
 				res.json(response);
 				console.log('요청을 수행하여, '+sess_id+'의 '+keyword+'을(를) 삭제하였습니다.');
 			}).catch(function(err){
@@ -266,7 +268,7 @@ router.post('/changeName', function(req, res) {
 			let mac_success_buf = Buffer.from(mac_success, 'hex').toString('base64');
 
 			var response = {ModifyName: Success, MAC_ModifyName: mac_success_buf};
-			conosle.log(reponse);
+			console.log(response);
 			res.json(response);			
 			console.log(previousName+'을(를) '+AlterName+'으로 변경하였습니다.');
 		})
