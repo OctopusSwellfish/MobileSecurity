@@ -49,10 +49,7 @@ router.post('/', function(req, res, next) { //로그인할 때
 
 	var id = temp_i;
 	var password = temp_p;
-
-	console.log("처음 받아온 암호문(ID) ==> "+id);
 	
-	console.log("처음 받아온 암호문(password) ==>"+password);
 	
 	var last_id = aes128Cipher.decrypt(id);
 	var last_password = aes128Cipher.decrypt(password);
@@ -63,8 +60,12 @@ router.post('/', function(req, res, next) { //로그인할 때
 			if(data == null || data == undefined) { //data에는 커서가 담깁니다
 				console.log("로그인 자료 없음! ID: " +id);
 				var fail = aes128Cipher.encrypt('fail');
-				console.log('암호문 ==> ' + fail);		
-				var response = {login: fail}; //json형태로
+				let mac_fail = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(fail).digest('hex');
+				let mac_fail_buf = Buffer.from(mac_fail, 'hex').toString('base64');
+				
+				var response = {login: fail, MAC_login: mac_fail_buf}; //json형태로
+				console.log(response);
+	
 				res.json(response); //전송
 			
 				return;
@@ -73,8 +74,11 @@ router.post('/', function(req, res, next) { //로그인할 때
 			
 				console.log("로그인 암호 틀림! ID: " +id);
 				var fail = aes128Cipher.encrypt('fail');
-				console.log('암호문 ==>' + fail);
-				var response = {login: fail};
+				let mac_fail = crypto.createHmac('sha256', Buffer.from('myVeryTopSecretK', 'utf8')).update(fail).digest('hex');
+                                let mac_fail_buf = Buffer.from(mac_fail, 'hex').toString('base64');
+				
+				var response = {login: fail, MAC_login: mac_fail_buf};
+				console.log(response);
 				res.json(response);
 			}else{
 				console.log('로그인 성공! ID: '+id);
