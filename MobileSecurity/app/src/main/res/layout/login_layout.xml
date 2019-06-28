@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layout_login"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/cat_background"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_marginTop="15sp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            >
+
+            <TextView
+                android:textSize="32sp"
+                android:textColor="#000000"
+                android:text="송은주님"
+                android:id="@+id/text_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="70sp"
+                android:layout_marginTop="30sp"
+                />
+
+            <ImageView
+                android:layout_marginTop="15sp"
+                android:layout_marginRight="25sp"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:id="@+id/iv"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:textSize="32sp"
+            android:textColor="#000000"
+            android:text="환영합니다"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.6"
+        >
+
+        <ListView
+            android:id="@+id/list1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginBottom="70sp"
+        >
+
+        <Button
+            android:onClick="onClickLogin"
+            android:text="전체 조회"
+            android:id="@+id/button_all_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_marginLeft="20dp"
+            android:onClick="onClickLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:id="@+id/button_logout"
+            />
+        <Button
+            android:onClick="onClickLogin"
+            android:text="정보수정"
+            android:id="@+id/button_myPage"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

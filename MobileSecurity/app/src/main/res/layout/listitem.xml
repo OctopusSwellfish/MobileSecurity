@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_alignParentLeft="true"
+        android:id="@+id/medicine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:text="감기약"
+        />
+    <TextView
+        android:layout_toRightOf="@id/medicine_name"
+        android:textSize="15dip"
+        android:text="성분: "
+        android:id="@+id/medicine_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="복용법: "
+        android:layout_marginTop="10dp"
+        android:id="@+id/medicine_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:layout_toRightOf="@+id/medicine_name"
+        android:layout_below="@id/medicine_name"
+        />
+    <TextView
+        android:text="효과: "
+        android:layout_marginTop="10dp"
+        android:id="@+id/medicine_effect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:layout_toRightOf="@+id/medicine_name"
+        android:layout_below="@id/medicine_period"
+        />
+    <TextView
+        android:text="주의사항: "
+        android:layout_marginTop="10dp"
+        android:id="@+id/medicine_caution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:layout_toRightOf="@+id/medicine_name"
+        android:layout_below="@id/medicine_effect"
+        />
+    <TextView
+        android:text="제조사: "
+        android:layout_marginTop="10dp"
+        android:id="@+id/medicine_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:layout_toRightOf="@+id/medicine_name"
+        android:layout_below="@id/medicine_caution"
+        />
+</RelativeLayout>
