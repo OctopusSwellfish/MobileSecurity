@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">1팀 애용Pharm</string>
+    <string name="age">성별을 고르시오</string>
+
+    <string-array name="age_array">
+        <item>남자</item>
+        <item>여자</item>
+    </string-array>
+</resources>
