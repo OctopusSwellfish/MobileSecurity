@@ -52,6 +52,10 @@
   * HMAC SHA256 적용
 
     ![integrity](./res/howtocheckIntegrity.png)
+    
+* WireShark로 데이터 검증
+
+    ![Wireshark](./res/encryptResult.png)
 
 ### 성과
 
