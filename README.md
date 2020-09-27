@@ -7,4 +7,12 @@
 ### 개발 기간
 * 2019.03~2019.06
 
+### 개발 인원
+* [송은주](https://github.com/OctopusSwellfish)
+* [안현진](https://github.com/HyeonJinGitHub)
+
 ### 설계 환경
+* **서버** : AWS EC2, NodeJS, express
+* **데이터베이스** : MySQL, Sequelize
+* **안드로이드** : JAVA
+* **패킷 탐지** : WireShark
