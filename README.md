@@ -14,8 +14,8 @@
 * 2019.03~2019.06
 
 ### 개발 인원
-* [송은주](https://github.com/OctopusSwellfish)
-* [안현진](https://github.com/HyeonJinGitHub)
+* [송은주](https://github.com/OctopusSwellfish) - NodeJS 서버 개발
+* [안현진](https://github.com/HyeonJinGitHub) - 안드로이드 애플리케이션 개발
 
 ### 설계 환경
 * **서버** : AWS EC2, NodeJS, express
